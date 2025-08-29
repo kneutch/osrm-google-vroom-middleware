@@ -166,9 +166,10 @@ describe('VROOM Middleware Integration', () => {
 
       expect(response.body).toHaveProperty('code', 'InternalError');
 
-      // Restart for other tests
+      // Start a new mock server for remaining tests
+      mockOsrmServer = new MockOsrmServer(5001); // Use different port
       await mockOsrmServer.start();
-    });
+    }, 10000); // Increase timeout for this test
   });
 
   describe('Matrix Coordinate Mapping', () => {
