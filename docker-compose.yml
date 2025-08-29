@@ -1,0 +1,48 @@
+version: '3.8'
+
+services:
+  # VROOM server for integration testing
+  vroom:
+    image: vroomvrp/vroom-docker:latest
+    container_name: vroom-server
+    ports:
+      - "3000:3000"
+    environment:
+      - VROOM_LOG_LEVEL=info
+    command: [
+      "vroom", 
+      "--router", "osrm", 
+      "--host", "0.0.0.0", 
+      "--port", "3000"
+    ]
+    volumes:
+      - ./docker/vroom-conf:/conf
+    depends_on:
+      - osrm
+    networks:
+      - vroom-network
+
+  # OSRM backend server that VROOM uses
+  osrm:
+    image: osrm/osrm-backend:latest
+    container_name: osrm-server
+    ports:
+      - "5000:5000"
+    command: [
+      "osrm-routed", 
+      "--algorithm", "mld", 
+      "/data/map.osrm"
+    ]
+    volumes:
+      - ./docker/osrm-data:/data
+    networks:
+      - vroom-network
+
+networks:
+  vroom-network:
+    driver: bridge
+
+# To use this setup:
+# 1. Download OSM data and process it with OSRM
+# 2. Place processed data in ./docker/osrm-data/
+# 3. Run: docker-compose up
