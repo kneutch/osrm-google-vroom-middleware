@@ -26,19 +26,19 @@ describe('API Endpoints', () => {
         });
     });
 
-    describe('POST /api/v1/route/osrm', () => {
-        it('should handle OSRM routing request', async () => {
+    describe('POST /api/v1/vroom/initialize', () => {
+        it('should handle VROOM initialization request', async () => {
             const requestData = {
-                coordinates: [[13.388860, 52.517037], [13.385983, 52.496891]]
+                vehicles: [{ id: 0, start: [13.388860, 52.517037], end: [13.388860, 52.517037] }],
+                jobs: [{ id: 1, location: [13.385983, 52.496891] }]
             };
 
             const res = await request(app)
-                .post('/api/v1/route/osrm')
+                .post('/api/v1/vroom/initialize')
                 .send(requestData)
                 .expect(200);
 
             expect(res.body).toHaveProperty('message');
-            expect(res.body).toHaveProperty('data');
         });
     });
 

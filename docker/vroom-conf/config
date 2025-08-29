@@ -1,0 +1,23 @@
+# VROOM server configuration
+# This file configures the VROOM server for Docker usage
+
+# Server settings
+router=osrm
+host=0.0.0.0
+port=3000
+
+# OSRM backend URL (points to our OSRM container)
+router_url=http://osrm:5000
+
+# Logging
+log_level=info
+
+# Thread settings
+max_vehicles=1000
+max_jobs=10000
+
+# Enable geometry output
+geometry=true
+
+# Enable detailed error reporting
+error_on_overflow=true
